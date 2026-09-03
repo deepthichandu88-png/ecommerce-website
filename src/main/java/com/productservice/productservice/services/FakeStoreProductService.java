@@ -4,8 +4,12 @@ import com.productservice.productservice.dtos.FakeStoreProductDto;
 import com.productservice.productservice.dtos.GenericProductDto;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.restclient.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -68,8 +72,15 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public void deleteProductById() {
+    public GenericProductDto deleteProductById(Long id) {
+        RestTemplate restTemplate = restTemplateBuilder.build();
 
+        RequestCallback requestCallback = restTemplate.acceptHeaderRequestCallback(FakeStoreProductDto.class);
+        ResponseExtractor<ResponseEntity<FakeStoreProductDto>> responseExtractor =
+                restTemplate.responseEntityExtractor(FakeStoreProductDto.class);
+        ResponseEntity<FakeStoreProductDto> responseEntity =
+                restTemplate.execute(specificProductUrl, HttpMethod.DELETE, requestCallback, responseExtractor, id);
+        return convertToGenericProductDto(responseEntity.getBody());
     }
 
     @Override
@@ -83,6 +94,6 @@ public class FakeStoreProductService implements ProductService {
 
     @Override
     public void updateProductById() {
-
+        //
     }
 }
