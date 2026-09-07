@@ -15,7 +15,7 @@ public class SelfProductServiceImpl implements ProductService{
 
     @Override
     public List<GenericProductDto> getAllProducts() {
-        return List.of();
+        return null;
     }
 
     @Override

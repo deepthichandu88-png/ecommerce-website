@@ -15,15 +15,21 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Component
-public class FakeStoreClientAdapter {
+public class FakeStoreClient {
 
     private RestTemplateBuilder restTemplateBuilder;
 
-    private String specificProductUrl = "https://fakestoreapi.com/products/{id}";
+    @Value("${fakestore.api.url}")
+    private String fakeStoreUrl;
+
+    @Value("${fakestore.api.paths.products}")
+    private String pathForProducts;
+
+    private String specificProductUrl = fakeStoreUrl + pathForProducts + "/{id}";
 
     private String genericProductUrl = "https://fakestoreapi.com/products/";
 
-    FakeStoreClientAdapter(RestTemplateBuilder restTemplateBuilder){
+    FakeStoreClient(RestTemplateBuilder restTemplateBuilder){
 
         this.restTemplateBuilder = restTemplateBuilder;
     }
