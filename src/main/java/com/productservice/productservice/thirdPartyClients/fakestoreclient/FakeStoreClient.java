@@ -19,10 +19,8 @@ public class FakeStoreClient {
 
     private RestTemplateBuilder restTemplateBuilder;
 
-    @Value("${fakestore.api.url}")
     private String fakeStoreUrl;
 
-    @Value("${fakestore.api.paths.products}")
     private String pathForProducts;
 
     private String specificProductUrl;
