@@ -25,13 +25,16 @@ public class FakeStoreClient {
     @Value("${fakestore.api.paths.products}")
     private String pathForProducts;
 
-    private String specificProductUrl = fakeStoreUrl + pathForProducts + "/{id}";
+    private String specificProductUrl;
 
-    private String genericProductUrl = "https://fakestoreapi.com/products/";
+    private String genericProductUrl;
 
-    FakeStoreClient(RestTemplateBuilder restTemplateBuilder){
+    FakeStoreClient(RestTemplateBuilder restTemplateBuilder,
+                    @Value("${fakestore.api.url}") String fakeStoreUrl, @Value("${fakestore.api.paths.products}") String pathForProducts){
 
         this.restTemplateBuilder = restTemplateBuilder;
+        this.genericProductUrl = fakeStoreUrl + pathForProducts;
+        this.specificProductUrl = fakeStoreUrl + pathForProducts + "/{id}";
     }
 
 
@@ -39,6 +42,7 @@ public class FakeStoreClient {
         //Integrate the FakeStore API.
         //RestTemplate
         RestTemplate restTemplate = restTemplateBuilder.build();
+
         ResponseEntity<FakeStoreProductDto> responseEntity =
                 restTemplate.getForEntity(specificProductUrl, FakeStoreProductDto.class, id);
 
